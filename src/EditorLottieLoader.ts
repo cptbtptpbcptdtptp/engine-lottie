@@ -9,7 +9,7 @@ import { LottieResource, TypeRes } from "./LottieResource";
 export class EditorLottieLoader extends Loader<LottieResource> {
   // @ts-ignore
   load(item: LoadItem, resourceManager: ResourceManager): AssetPromise<LottieResource> {
-    return new AssetPromise((resolve) => {
+    return new AssetPromise((resolve, reject) => {
       const { url } = item;
       // @ts-ignore
       resourceManager._request<any>(url, { type: "json" }).then((data) => {
@@ -25,8 +25,8 @@ export class EditorLottieLoader extends Loader<LottieResource> {
           const { engine } = resourceManager;
           const resource = new LottieResource(engine, res as TypeRes, atlas);
           resolve(resource);
-        });
-      });
+        }).catch(reject);
+      }).catch(reject);
     });
   }
 }
