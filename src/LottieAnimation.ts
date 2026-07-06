@@ -295,7 +295,7 @@ export class LottieAnimation extends Script {
 
   private _updateElement<T extends BaseLottieLayer>(layer: T) {
     // @ts-ignore
-    const { transform, entity, sprite, spriteRenderer, parent, width, height } = layer;
+    const { transform, entity, sprite, spriteRenderer, textRenderer, parent, width, height } = layer;
     const entityTransform = entity.transform;
     const a = transform.a.v;
     const s = transform.s.v;
@@ -365,6 +365,11 @@ export class LottieAnimation extends Script {
 
       // update pivot of sprite
       sprite.pivot = LottieAnimation._pivotVector.set(a[0] / width, (height - a[1]) / height);
+    }
+
+    if (textRenderer) {
+      const { r, g, b } = textRenderer.color;
+      textRenderer.color.set(r, g, b, o * this._alpha);
     }
 
     entity.isActive = layer.visible;
