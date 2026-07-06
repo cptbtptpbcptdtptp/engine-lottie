@@ -6,6 +6,8 @@ import { TypeTextKeyframe } from "../LottieResource";
  * @internal
  */
 export default class TextLottieElement extends BaseLottieElement {
+  textRenderer: TextRenderer;
+
   constructor(layer, engine?: Engine, entity?: Entity, name?: string) {
     super(layer);
 
@@ -18,6 +20,7 @@ export default class TextLottieElement extends BaseLottieElement {
       this.entity = new Entity(engine, layer.nm);
     }
     const textRenderer = this.entity.addComponent(TextRenderer);
+    this.textRenderer = textRenderer;
     const keyframes: TypeTextKeyframe[] = layer?.t?.d?.k;
     if (keyframes.length === 1) {
       // only one frame
@@ -43,5 +46,10 @@ export default class TextLottieElement extends BaseLottieElement {
     }
 
     textRenderer.priority = (Number.MAX_SAFE_INTEGER - this.index * 1000000) / Number.MAX_SAFE_INTEGER;
+  }
+
+  destroy() {
+    super.destroy();
+    this.textRenderer = null;
   }
 }
